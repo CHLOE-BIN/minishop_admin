@@ -1,0 +1,75 @@
+@import './config.scss';
+.container{
+    width: $min-width;
+    margin: 0 auto;
+}
+.clearfix:before,
+.clearfix:after {
+    content: " ";
+    display: table;
+}
+.clearfix:after {
+    clear: both;
+}
+
+// 按钮样式
+.el-button {
+    display: inline-block;
+    line-height: 1;
+    white-space: nowrap;
+    cursor: pointer;
+    background: #FFF;
+    border: 1px solid #DCDFE6;
+    color: #606266;
+    -webkit-appearance: none;
+    text-align: center;
+    box-sizing: border-box;
+    outline: 0;
+    margin: 0;
+    transition: .1s;
+    font-weight: 500;
+    padding: 12px 20px;
+    font-size: 14px;
+    border-radius: 4px;
+    &:hover {
+        color: #ff8640;
+        border-color: #ffe1c6;
+        background-color: #fff7ec;
+    }
+}
+.el-button--primary {
+    color: #FFF;
+    background-color: #ff6600d6;
+    border-color: #ff6600d6;
+    &:hover{
+        color: #FFF;
+        background-color: $colorA;
+        border-color: $colorA;
+    }
+}
+
+// 下拉菜单样式
+.el-dropdown-link {
+    cursor: pointer;
+    color: $colorL;
+    &:hover {
+      color: $colorG;
+    }
+  }
+.el-icon-arrow-down {
+    font-size: 12px;
+}
+.el-dropdown-menu__item {
+    list-style: none;
+    line-height: 36px;
+    padding: 0 20px;
+    margin: 0;
+    font-size: 14px;
+    color: $colorL;
+    cursor: pointer;
+    outline: 0;
+}
+.el-dropdown-menu__item:not(.is-disabled):hover {
+    background-color: #ff66000c;
+    color: $colorA;
+}
