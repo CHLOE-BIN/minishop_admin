@@ -9,25 +9,43 @@ const Cart = require("../../models/Cart");
 // @access  public
 router.post("/add", (req, res) => {
     const userId = req.body.userId
+    const productId = req.body.productId
+    const version = req.body.version
+    const color = req.body.color
     Cart.findOne({ userId })
         .then(() => {
-            const newCart = {}
-
-            if (userId) newCart.userId = userId
-            if (req.body.cartId) newCart.cartId = req.body.cartId
-            if (req.body.productId) newCart.productId = req.body.productId
-            if (req.body.name) newCart.name = req.body.name
-            if (req.body.mainImg) newCart.mainImg = req.body.mainImg
-            if (req.body.price) newCart.price = req.body.price
-            if (req.body.version) newCart.version = req.body.version
-            if (req.body.color) newCart.color = req.body.color
-            if (req.body.num) newCart.num = req.body.num
-            newCart.selected = false
-
-            new Cart(newCart)
-                .save()
-                .then(cart => res.json(cart))
-                .catch(err => console.log(err))
+            Cart.findOne({ productId })
+                .then((product) => {
+                    if(product && product.version == version && product.color == color) {
+                        // 查看是否有同类商品, 有同类则该类数量+1
+                        const num = product.num + 1
+                        Cart.findOneAndUpdate(
+                            { cartId: product.cartId },
+                            { $set: {num, selected: true} },
+                            { new: true })
+                            .then(cart => {
+                                return res.json(cart)
+                            })
+                    } else {
+                        // 若无同类则新增购物车
+                        const newCart = {}
+                        if (userId) newCart.userId = userId
+                        if (req.body.cartId) newCart.cartId = req.body.cartId
+                        if (req.body.productId) newCart.productId = req.body.productId
+                        if (req.body.name) newCart.name = req.body.name
+                        if (req.body.mainImg) newCart.mainImg = req.body.mainImg
+                        if (req.body.price) newCart.price = req.body.price
+                        if (req.body.version) newCart.version = req.body.version
+                        if (req.body.color) newCart.color = req.body.color
+                        if (req.body.num) newCart.num = req.body.num
+                        newCart.selected = false
+            
+                        new Cart(newCart)
+                            .save()
+                            .then(cart => res.json(cart))
+                            .catch(err => console.log(err))
+                    }
+                })
         })
 })
 

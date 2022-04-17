@@ -106,15 +106,43 @@ router.post("/login", (req, res) => {
         })
 })
 
-// $route   GET /users/current
-// @desc    返回 current user
-// @access  private
-router.get("/current", passport.authenticate('jwt', { session: false }), (req, res) => {
-    res.json({
-        id: req.user.id,
-        username: req.user.username
-    })
+// $route   POST /users/address
+// @desc    查找指定用户的默认地址信息
+// @access  public
+router.post("/address", (req, res) => {
+    const username = req.body.username
+    const defaultAddr = req.body.defaultAddr
+    if (username != null) {
+        User.findOne({ username })
+            .then((user) => {
+                if(user.defaultAddr.name == '' || user.defaultAddr.phone == '' || user.defaultAddr.address == '') {
+                    // 如果当前用户没有默认地址, 则存储当前地址为默认值
+                    User.findOneAndUpdate(
+                        { username },
+                        { $set: {defaultAddr} },
+                        { new: true })
+                        .then(user => {
+                            return res.json(user)
+                        })
+                } else {
+                    // 若有默认地址, 则直接读取
+                    return res.json(user)
+                }
+            })
+    } else {
+        return res.status(400).json("未登录")
+    }
 })
+
+// // $route   GET /users/current
+// // @desc    返回 current user
+// // @access  private
+// router.get("/current", passport.authenticate('jwt', { session: false }), (req, res) => {
+//     res.json({
+//         id: req.user.id,
+//         username: req.user.username
+//     })
+// })
 
 module.exports = router
 

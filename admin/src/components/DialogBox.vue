@@ -99,7 +99,7 @@ export default {
             this.dialogBox.option == "add"
               ? "add"
               : `edit/${this.productsForm.productId}`;
-          console.log(url);
+          console.log('productsForm=>', this.productsForm);
           this.$axios.post(`/products/${url}`, this.productsForm).then(res => {
             if (url == "add") {
               this.$message({

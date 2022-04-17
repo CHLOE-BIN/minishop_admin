@@ -33,7 +33,6 @@
             </el-dropdown-menu>
           </el-dropdown>
         </div>
-
         <span>|</span>
         <div class="myorder">
           <a @click="goToOrderList">我的订单</a>
@@ -48,12 +47,15 @@ export default {
   name: "order-header",
   data() {
     return {
-      title: ""
+      title: "",
     };
   },
   computed: {
     username() {
       return this.$store.getters.currentUser;
+    },
+    userShow() {
+      return this.show
     }
   },
   mounted() {
@@ -61,6 +63,14 @@ export default {
   },
   methods: {
     init() {
+      if(sessionStorage.getItem('username') == 'null') {
+        this.$router.push({
+          path: '/login',
+          query: {
+            change: true
+          }
+        })
+      }
       if (this.$route.path === "/confirm") {
         this.title = "确认订单";
       } else if (this.$route.path === "/cart") {
@@ -74,6 +84,17 @@ export default {
     },
     goToOrderList() {
       this.$router.push("/list");
+    },
+    logout() {
+      // 1. 清除sessionStorge和vuex中的用户名和token
+      this.$store.dispatch("setUser", null);
+      // 返回上一页
+      this.$message({
+        type: "success",
+        message: "退出登录",
+        duration: 1000
+      });
+      this.$router.push('/')
     }
   }
 };
