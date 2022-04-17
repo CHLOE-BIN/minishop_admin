@@ -10,13 +10,14 @@ const Cart = require("../../models/Cart");
 router.post("/add", (req, res) => {
     const userId = req.body.userId
     const productId = req.body.productId
+    const name = req.body.name
     const version = req.body.version
     const color = req.body.color
     Cart.findOne({ userId })
         .then(() => {
             Cart.findOne({ productId })
                 .then((product) => {
-                    if(product && product.version == version && product.color == color) {
+                    if(product && product.name == name && product.version == version && product.color == color) {
                         // 查看是否有同类商品, 有同类则该类数量+1
                         const num = product.num + 1
                         Cart.findOneAndUpdate(
@@ -24,7 +25,7 @@ router.post("/add", (req, res) => {
                             { $set: {num, selected: true} },
                             { new: true })
                             .then(cart => {
-                                return res.json(cart)
+                                return res.json({cart: cart})
                             })
                     } else {
                         // 若无同类则新增购物车

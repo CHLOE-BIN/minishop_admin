@@ -10,7 +10,7 @@ import 'element-ui/lib/theme-chalk/index.css';
 Vue.use(ElementUI);
 Vue.prototype.$axios = axios
 Vue.use(VueLazyLoad, {
-  loading: '/imgs/loading-svg/loading-cubes.svg'
+  loading: '/imgs/loading-svg/loading-bars.svg'
 })
 
 Vue.config.productionTip = false
