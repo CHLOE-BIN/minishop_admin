@@ -123,10 +123,8 @@ export default {
     return {
       proList: [],
       length: '',
-      keyword: '',
       phoneList: [],
       tvList: [],
-      timer: null,
       keyword: '',
     };
   },
@@ -151,10 +149,6 @@ export default {
     cartCount() {
       return this.$store.getters.cartCount;
     },
-    // 动态滚动搜索关键词
-    dynamicKeyword() {
-      return this.keyword
-    }
   },
   filters: {
     currency(val) {
@@ -170,15 +164,15 @@ export default {
   methods: {
     getProductList() {
       this.$axios.get("/products").then(res => {
+        console.log('res=>', res);
         for (let i = 0; i < res.length; i++) {
-          this.productList.push(res[i])
+          this.proList.push(res[i])
           if (res[i].categoryId == 1) {
             this.phoneList.push(res[i]);
           } else if (res[i].categoryId == 2) {
             this.tvList.push(res[i]);
           }
         }
-        this.proList = res
         this.length = this.proList.length
       });
     },
@@ -258,9 +252,6 @@ export default {
       location.reload()
     }
   },
-  beforeDestroy () {
-    clearInterval(this.timer)
-  }
 };
 </script>
 
