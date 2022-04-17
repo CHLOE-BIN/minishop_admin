@@ -143,13 +143,19 @@ export default {
       random_no = new Date().getTime() + random_no;
       return random_no;
     },
-    createAddr() {
-      let obj = {};
-      obj.name = sessionStorage.getItem("receiver");
-      obj.phone = sessionStorage.getItem("phone");
-      obj.address = sessionStorage.getItem("address");
-      this.addrList.push(obj)
-      console.log(this.addrList);
+    createAddr(addrInfo = {}) {
+      if(JSON.stringify(addrInfo) != "{}") {
+        this.addrList.push(addrInfo)
+      } else {
+        const username = sessionStorage.getItem('username')
+        this.$axios.post('/users/address', {username, addrInfo}).then(res => {
+          // console.log('createAddr=>', res);
+          if(res.defaultAddr.name != '' && res.defaultAddr.phone != ''  && res.defaultAddr.address != '') {
+            this.addrList.push(res.defaultAddr)
+          }
+        })
+      }
+      console.log('this.addrList=>', this.addrList);
     },
     selectAddr(e) {
       // 1. 获取选中的地址

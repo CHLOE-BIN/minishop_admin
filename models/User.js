@@ -19,6 +19,9 @@ const UserSchema = new Schema({
         type: String,
         required: true
     },
+    defaultAddr: {
+        type: Object
+    },
     date: {
         type: Date,
         default: Date.now
