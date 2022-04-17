@@ -15,11 +15,18 @@
           <el-form-item label="商品描述" prop="subtitle">
             <el-input v-model="productsForm.subtitle"></el-input>
           </el-form-item>
-          <el-form-item label="商品图片" prop="mainImg">
-            <el-input v-model="productsForm.mainImg"></el-input>
+          <el-form-item label="商品图片" prop="mainImage">
+            <el-input v-model="productsForm.mainImage"></el-input>
           </el-form-item>
           <el-form-item label="商品价格" prop="price">
-            <el-input v-model.number="productsForm.price"></el-input>
+            <el-input v-model="productsForm.price">
+              <template slot="append">元</template>
+            </el-input>
+          </el-form-item>
+          <el-form-item label="商品库存" prop="reserve">
+            <el-input v-model.number="productsForm.reserve">
+              <template slot="append">件</template>
+            </el-input>
           </el-form-item>
           <el-form-item>
             <el-button type="primary" @click="submitForm('form')">提交</el-button>
@@ -66,7 +73,7 @@ export default {
             trigger: "blur"
           }
         ],
-        mainImg: [
+        mainImage: [
           {
             required: true,
             message: "商品图片不能为空",
@@ -79,9 +86,20 @@ export default {
             message: "商品价格不能为空",
             trigger: "blur"
           },
+          { 
+            pattern: /(^[1-9]([0-9]+)?(\.[0-9]{1,2})?$)|(^(0){1}$)|(^[0-9]\.[0-9]([0-9])?$)/, 
+            message: '请输入数字,可保留两位小数' 
+          }
+        ],
+        reserve: [
+          {
+            required: true,
+            message: "商品库存不能为空",
+            trigger: "blur"
+          },
           {
             type: "number",
-            message: "商品价格必须是数字"
+            message: "商品库存必须是数字"
           }
         ]
       }
@@ -99,7 +117,7 @@ export default {
             this.dialogBox.option == "add"
               ? "add"
               : `edit/${this.productsForm.productId}`;
-          console.log(url);
+          console.log('productsForm=>', this.productsForm);
           this.$axios.post(`/products/${url}`, this.productsForm).then(res => {
             if (url == "add") {
               this.$message({
@@ -116,7 +134,7 @@ export default {
             }
             // 关闭弹窗并刷新
             this.dialogBox.show = false;
-            location.reload();
+            // location.reload();
           });
         }
       });

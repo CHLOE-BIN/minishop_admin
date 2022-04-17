@@ -29,11 +29,11 @@
                   class="el-dropdown-item"
                   @click.native="logout"
                 >退出登录</el-dropdown-item>
-              </el-dropdown-menu>
+                </el-dropdown-menu>
             </el-dropdown>
           </a>
           <a href="javascript:;" v-else @click="goToLogin">登录</a>
-          <a href="javascript:;" v-if="!isLogin">注册</a>
+          <a href="javascript:;" v-if="!isLogin" @click="goToRegister">注册</a>
           <a href="javascript:;" class="mycart" @click="goToCart">
             <span class="icon-mycart"></span>
             购物车 ({{cartCount}})
@@ -126,6 +126,8 @@ export default {
       keyword: '',
       phoneList: [],
       tvList: [],
+      timer: null,
+      keyword: '',
     };
   },
   computed: {
@@ -148,6 +150,10 @@ export default {
     },
     cartCount() {
       return this.$store.getters.cartCount;
+    },
+    // 动态滚动搜索关键词
+    dynamicKeyword() {
+      return this.keyword
     }
   },
   filters: {
@@ -165,6 +171,7 @@ export default {
     getProductList() {
       this.$axios.get("/products").then(res => {
         for (let i = 0; i < res.length; i++) {
+          this.productList.push(res[i])
           if (res[i].categoryId == 1) {
             this.phoneList.push(res[i]);
           } else if (res[i].categoryId == 2) {
@@ -173,9 +180,6 @@ export default {
         }
         this.proList = res
         this.length = this.proList.length
-        console.log('1',this.proList);
-        console.log('2',this.phoneList);
-        console.log('3',this.tvList);
       });
     },
     getCartCount() {
@@ -215,32 +219,47 @@ export default {
       this.$router.push("/list");
     },
     goToLogin() {
-      this.$router.push("/login");
+      this.$router.push({
+        path: "/login",
+        query: {
+          change: true
+        }
+      })
+    },
+    goToRegister() {
+      this.$router.push({
+        path: "/login",
+        query: {
+          change: false
+        }
+      });
     },
     logout() {
-      // alert("退出登录!");
       // 1. 清除sessionStorge和vuex中的用户名和token
       this.$store.dispatch("setUser", null);
-      // 返回上一页
+      // 返回首页
       this.$message({
         type: "success",
         message: "退出登录",
         duration: 1000
       });
-      location.reload();
+      this.$router.push('/')
     },
     goSearch() {
-      let keyword = document.querySelector("#search").value
-      console.log(keyword);
+      this.keyword = document.querySelector("#search").value
+      console.log(this.keyword);
       // 路由跳转时传递当前选中的信息
       this.$router.push({
         path: "/search",
         query: {
-          keyword: keyword
+          keyword: this.keyword
         }
       });
       location.reload()
     }
+  },
+  beforeDestroy () {
+    clearInterval(this.timer)
   }
 };
 </script>

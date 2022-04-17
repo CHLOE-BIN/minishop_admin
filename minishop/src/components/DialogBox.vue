@@ -167,16 +167,16 @@ export default {
           // 在sessionStorage中存储当前收货人信息
           // 1. 收件人信息
           this.addrInfo.name = this.orderForm.name;
-          sessionStorage.setItem("receiver", this.addrInfo.name);
+          // sessionStorage.setItem("receiver", this.addrInfo.name);
           // 2. 收件人手机号
           this.addrInfo.phone = this.orderForm.phone;
-          sessionStorage.setItem("phone", this.addrInfo.phone);
+          // sessionStorage.setItem("phone", this.addrInfo.phone);
           // 3. 拼接完整地址
           this.addrInfo.address = this.orderForm.location + this.orderForm.detail;
-          sessionStorage.setItem("address", this.addrInfo.address);
+          // sessionStorage.setItem("address", this.addrInfo.address);
           console.log("addrInfo=>", this.addrInfo);
           this.cancel()
-          this.$emit('createAddr')
+          this.$emit('createAddr', this.addrInfo)
         }
       });
     },

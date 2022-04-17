@@ -28,13 +28,18 @@ const ProductSchema = new Schema({
         type: Number
     },
     showImg: {
-        type: Array
+        type: Array,
+        default: 'noData'
     },
     version: {
         type: Array
     },
     color: {
         type: Array
+    },
+    reserve: {
+        type: Number,
+        default: 0
     },
     date: {
         type: Date,

@@ -1,7 +1,7 @@
 <template>
   <div>
     <order-header></order-header>
-    <div class="cartList" v-show="has_cart">
+    <div class="cartList" v-if="has_cart">
       <div class="container">
         <div class="cart-wrap">
           <div class="goods-list">
@@ -62,7 +62,7 @@
       </div>
     </div>
     <div class="container">
-      <div class="noCart" v-show="!has_cart">
+      <div class="noCart" v-if="!has_cart">
         <img src="/imgs/noCart.png" alt />
         <button @click="backShopping">马上去购物</button>
       </div>
@@ -134,27 +134,31 @@ export default {
     init() {
       // 获取当前用户购物车信息: 1.用户Id 2.商品详情 3.购物车列表
       const username = sessionStorage.getItem("username");
-      this.$axios.post("/users", { username }).then(user => {
-        const userId = user._id;
-        this.$axios.get("/carts", { params: { userId } }).then(cart => {
-          if (cart.length == 0) {
-            this.has_cart = false;
-            console.log("has_cart=>", this.has_cart);
-          }
-          this.cartList = cart;
-          console.log("cartList=>", this.cartList);
-          // 初始化购物车数量
-          for (let i = 0; i < this.cartList.length; i++) {
-            this.goodNum[i] = 1;
-            this.$set(this.goodNum, i, 1);
-            this.price[i] = this.cartList[i].price;
-            this.cartId[i] = this.cartList[i].cartId;
-          }
-          console.log("this.price=>", this.price);
-          console.log("this.goodNum=>", this.goodNum);
-          console.log("this.cartId=>", this.cartId);
+      if(username == 'null') {
+        this.has_cart = false
+        return
+      } else {
+        this.has_cart = true
+        this.$axios.post("/users", { username }).then(user => {
+          const userId = user._id;
+          this.$axios.get("/carts", { params: { userId } }).then(cart => {
+            if (cart.length == 0) {
+              this.has_cart = false;
+            }
+            this.cartList = cart;
+            console.log("cartList=>", this.cartList);
+            // 初始化购物车数量
+            for (let i = 0; i < this.cartList.length; i++) {
+              this.$set(this.goodNum, i, this.cartList[i].num);
+              this.price[i] = this.cartList[i].price;
+              this.cartId[i] = this.cartList[i].cartId;
+            }
+            console.log("this.price=>", this.price);
+            console.log("this.goodNum=>", this.goodNum);
+            console.log("this.cartId=>", this.cartId);
+          });
         });
-      });
+      }
     },
     // 全选
     selectAll() {
@@ -270,8 +274,16 @@ export default {
           })
         }
       }
-      // 生成订单
-      this.$router.push("/confirm");
+      if(this.checked.length == 0) {
+        this.$message({
+          type: 'error',
+          message: '您还未选择需要结账的商品',
+          duration: 1500
+        })
+      } else {
+        // 生成订单
+        this.$router.push("/confirm");
+      }
     }
   }
 };

@@ -488,7 +488,8 @@ export default {
       const username = sessionStorage.getItem("username");
       this.$axios.post("/users", { username }).then(user => {
         this.selectedInfo.userId = user._id;
-        this.$axios.post("/carts/add", this.selectedInfo).then(() => {
+        this.$axios.post("/carts/add", this.selectedInfo).then((res) => {
+          console.log('res=>', res);
           this.$message({
             type: "success",
             message: "添加购物车成功",
