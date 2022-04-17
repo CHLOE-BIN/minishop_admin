@@ -17,8 +17,21 @@
             <el-table-column prop="productId" label="商品ID" sortable width="180"></el-table-column>
             <el-table-column prop="name" label="商品名称" sortable width="180"></el-table-column>
             <!-- <el-table-column prop="subtitle" label="商品介绍" sortable width="180"></el-table-column> -->
-            <el-table-column prop="mainImg" label="商品图片" sortable width="180"></el-table-column>
-            <el-table-column prop="price" label="商品价格" sortable width="180"></el-table-column>
+            <el-table-column prop="mainImage" label="商品图片" sortable width="180">
+              <template slot-scope="scope">
+               <img class="mainImage" :src="require('../../../minishop/public'+scope.row.mainImage)" alt="">
+              </template>
+            </el-table-column>
+            <el-table-column prop="price" label="商品价格" sortable width="180">
+              <template slot-scope="scope">
+                <span>{{scope.row.price | price}}</span>
+              </template>
+            </el-table-column>
+            <el-table-column prop="reserve" label="商品库存" sortable width="180">
+              <template slot-scope="scope">
+                <span>{{scope.row.reserve | num}}</span>
+              </template>
+            </el-table-column>
             <el-table-column fixed="right" label="操作" width="100">
               <template slot-scope="scope">
                 <el-button @click="handleEdit(scope.row)" type="text">编辑</el-button>
@@ -55,10 +68,21 @@ export default {
         productId: "",
         name: "",
         subtitle: "",
-        mainImg: "",
-        price: ""
+        mainImage: "",
+        price: "",
+        reserve: ""
       }
     };
+  },
+  filters: {
+    price(val) {
+      if (!val) return "￥0.00 元";;
+      return "￥" + val.toFixed(2) + " 元";
+    },
+    num(val) {
+      if (!val) return "0 件";
+      return val + " 件";
+    }
   },
   mounted() {
     this.getProductsList();
@@ -85,8 +109,9 @@ export default {
         productId: row.productId,
         name: row.name,
         subtitle: row.subtitle,
-        mainImg: row.mainImg,
-        price: row.price
+        mainImage: row.mainImage,
+        price: row.price,
+        reserve: row.reserve
       };
     },
     handleDelete(row) {
@@ -110,8 +135,9 @@ export default {
         productId: "",
         name: "",
         subtitle: "",
-        mainImg: "",
-        price: ""
+        mainImage: "",
+        price: "",
+        reserve: ""
       };
     }
   }
@@ -135,6 +161,10 @@ export default {
     }
     .list-bd {
       margin-top: 10px;
+      .mainImage {
+        width: 100px;
+        height: 90px;
+      }
     }
   }
 }

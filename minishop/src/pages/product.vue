@@ -13,20 +13,32 @@
         <div class="box1">
           <div class="bg-1">
             <!-- 背景图 -->
-            <img v-lazy="'/imgs/product-show/bg-1/bg-1.png'" alt />
+            <template v-if="productId == '10017'">
+              <img v-lazy="'/imgs/product-show/bg-1/bg-1.png'" alt />
+            </template>
+            <template v-else>
+              <img v-lazy="'/imgs/product-show/bg-1/bg-2.png'" alt />
+            </template>
             <!-- 商品大图 -->
             <div class="pro-item">
               <div class="pro-content" :class="{activeShow:active}">
-                <span class="pro-name"></span>
-                <p class="pro-info">品质小金刚 90Hz高刷屏</p>
+                <!-- <span class="pro-name"></span> -->
+                <template v-if="productId == '10017'">
+                  <img style="width: 150px; height: 23px; margin-top: 100px;" src="/imgs/product-show/bg-1/pro-name-1.png" alt="">
+                  <p class="pro-info">品质小金刚 90Hz高刷屏</p>
+                </template>
+                <template v-else>
+                  <img style="width: 150px; height: 23px; margin-top: 100px;" src="/imgs/product-show/bg-1/pro-name-2.png" alt="">
+                  <p class="pro-info">120W 神仙秒充，充满只需一刻钟 </p>
+                </template>
               </div>
               <div class="pro-img">
-                <img src="/imgs/product-show/bg-1/pro-1.png" alt />
+                <img v-if="productId == '10017'" src="/imgs/product-show/bg-1/pro-1.png" alt />
               </div>
               <span class="pro-tips">*机身在不同光线和角度下会与图片有色差，以实物为准。</span>
             </div>
             <!-- 商品参数 -->
-            <div class="pro-params">
+            <div class="pro-params" v-if="productId == '10017'">
               <ul>
                 <li>
                   <span>90Hz 变速高刷屏</span>
@@ -142,6 +154,7 @@ export default {
   },
   data() {
     return {
+      productId: '',
       active: false,
       slideShow: false,
       swiperOptions: {
@@ -160,6 +173,7 @@ export default {
     window.setTimeout(function() {
       that.active = true;
     }, 500);
+    this.productId = window.location.href.split('/').at(-1)
   },
   methods: {
     goToDetail() {
