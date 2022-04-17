@@ -104,7 +104,7 @@
         <!-- 3. 搜索框 -->
         <div class="header-search">
           <div class="wrapper">
-            <input type="text" id="search" :value="keyword"/>
+            <input type="text" autocomplete="off" id="search" :value="keyword"/>
             <div class="icon-search">
               <a @click="goSearch"></a>
             </div>
@@ -121,6 +121,9 @@ export default {
   name: "nav-header",
   data() {
     return {
+      proList: [],
+      length: '',
+      keyword: '',
       phoneList: [],
       tvList: [],
     };
@@ -156,6 +159,7 @@ export default {
   mounted() {
     this.getProductList();
     this.getCartCount();
+    this.changeKeyword();
   },
   methods: {
     getProductList() {
@@ -167,8 +171,11 @@ export default {
             this.tvList.push(res[i]);
           }
         }
-        console.log(this.phoneList);
-        console.log(this.tvList);
+        this.proList = res
+        this.length = this.proList.length
+        console.log('1',this.proList);
+        console.log('2',this.phoneList);
+        console.log('3',this.tvList);
       });
     },
     getCartCount() {
@@ -179,6 +186,19 @@ export default {
           this.$store.dispatch("setCartCount", cart.length);
         })
       })
+    },
+    changeKeyword() {
+      let index = 0
+      let that = this
+      setInterval(function() {
+        if(index >= this.length) {
+          index = 0
+        } else {
+          index += 1
+        }
+        that.keyword = that.proList[index].name
+        console.log(that.keyword);
+      }, 3000)
     },
     goToCart() {
       this.$router.push("/cart");
