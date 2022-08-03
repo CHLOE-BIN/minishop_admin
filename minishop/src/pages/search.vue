@@ -8,7 +8,7 @@
             <div class="products">
                 <div class="product-list">
                     <ul>
-                        <li v-for="(sub,j) in searchList" :key="j">
+                        <li v-for="(sub,j) in showList" :key="j">
                             <a :href="'/#/product/'+sub.productId">
                                 <img v-lazy="sub.mainImage" alt />
                                 <p class="sub-name">{{sub.name}}</p>
@@ -17,6 +17,19 @@
                             </a>
                         </li>
                     </ul>
+                </div>
+                <!-- 分页 -->
+                <div class="pagination">
+                    <el-pagination
+                        background
+                        layout="total, sizes, prev, pager, next, jumper"
+                        :current-page="tablePage.pageNum"
+                        :page-size="tablePage.pageSize"
+                        :page-sizes="pageSizes"
+                        :total="tablePage.total"
+                        @size-change="handleSizeChange"
+                        @current-change="handlePageChange"
+                    />
                 </div>
             </div>
         </div>
@@ -31,8 +44,16 @@ export default {
   data() {
     return {
       searchList: [],
+      showList: [],
       keyword: this.$route.query.keyword,
-      is_find: ''
+      is_find: '',
+      // 分页
+      tablePage: {
+        pageNum: 1, // 第几页
+        pageSize: 8, // 每页多少条
+        total: 0 // 总记录数
+      },
+      pageSizes: [8, 16]
     };
   },
   components: {
@@ -66,8 +87,35 @@ export default {
             this.searchList = res
         } else {
             this.is_find = true
+            this.tablePage.total = this.searchList.length
+            this.handlePageChange(1)
         }
       });
+    },
+    // 分页
+    handlePageChange(currentPage) {
+      this.tablePage.pageNum = currentPage
+      let size = this.tablePage.pageSize
+      if(currentPage == 1) {
+        let start = 0
+        this.showList = this.searchList.slice(start, size)
+      } else {
+        let start = size * currentPage - size
+        let end = size * currentPage
+        this.showList = this.searchList.slice(start, end)
+      }
+    },
+    handleSizeChange(pageSize) {
+      this.tablePage.pageSize = pageSize
+      let currentPage = this.tablePage.pageNum
+      if(currentPage == 1) {
+        let start = 0
+        this.showList = this.searchList.slice(start, pageSize)
+      } else {
+        let start = pageSize * currentPage - pageSize
+        let end = pageSize * currentPage
+        this.showList = this.searchList.slice(start, end)
+      }
     }
   }
 };
@@ -88,6 +136,7 @@ export default {
         }
         .products {
             margin-top: 30px;
+            text-align: center;
             .product-list {
                 display: block;
                 margin-top: 20px;

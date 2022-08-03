@@ -4,10 +4,10 @@
       <div class="form">
         <el-form :model="productsForm" :rules="rules" ref="form" label-width="100px">
           <el-form-item label="商品类型" prop="categoryId">
-            <el-input v-model.number="productsForm.categoryId"></el-input>
+            <el-input disabled v-model.number="productsForm.categoryId"></el-input>
           </el-form-item>
           <el-form-item label="商品编号" prop="productId">
-            <el-input v-model.number="productsForm.productId"></el-input>
+            <el-input disabled v-model.number="productsForm.productId"></el-input>
           </el-form-item>
           <el-form-item label="商品名称" prop="name">
             <el-input v-model="productsForm.name"></el-input>
@@ -117,8 +117,10 @@ export default {
             this.dialogBox.option == "add"
               ? "add"
               : `edit/${this.productsForm.productId}`;
+          this.productsForm.price = +this.productsForm.price
           console.log('productsForm=>', this.productsForm);
           this.$axios.post(`/products/${url}`, this.productsForm).then(res => {
+            console.log('res=>', res);
             if (url == "add") {
               this.$message({
                 message: "商品添加成功",
@@ -134,7 +136,7 @@ export default {
             }
             // 关闭弹窗并刷新
             this.dialogBox.show = false;
-            // location.reload();
+            location.reload();
           });
         }
       });

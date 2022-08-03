@@ -6,6 +6,8 @@ import Error from '../views/404.vue'
 import Phone from '../views/phone.vue'
 import User from '../views/user.vue'
 import Tv from '../views/tv.vue'
+import Order from '../views/order.vue'
+import AllOrders from '../views/allOrders.vue'
 
 Vue.use(Router)
 
@@ -40,6 +42,14 @@ const router = new Router({
       path: '/user',
       name: 'user',
       component: User
+    }, {
+      path: '/order',
+      name: 'order',
+      component: Order
+    }, {
+      path: '/allOrders',
+      name: 'all-orders',
+      component: AllOrders
     }
   ]
 })

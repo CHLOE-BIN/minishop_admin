@@ -4,16 +4,16 @@
     <div class="options">
       <el-row>
         <el-col>
-          <el-menu default-active="1" :default-openeds="['1']">
+          <el-menu :default-openeds="['2']">
             <router-link to="/home">
               <el-menu-item index="1">
-                <i class="el-icon-document"></i>
+                <i class="el-icon-house"></i>
                 <span slot="title">首页</span>
               </el-menu-item>
             </router-link>
             <el-submenu index="2">
               <template slot="title">
-                <i class="el-icon-location"></i>
+                <i class="el-icon-shopping-bag-2"></i>
                 <span>商品管理</span>
               </template>
               <el-menu-item-group>
@@ -33,8 +33,14 @@
             </el-submenu>
             <router-link to="/user">
               <el-menu-item index="3">
-                <i class="el-icon-document"></i>
+                <i class="el-icon-user"></i>
                 <span slot="title">用户管理</span>
+              </el-menu-item>
+            </router-link>
+            <router-link to="/allOrders">
+              <el-menu-item index="4">
+                <i class="el-icon-document"></i>
+                <span slot="title">订单管理</span>
               </el-menu-item>
             </router-link>
           </el-menu>
@@ -49,7 +55,7 @@ export default {
   name: "nav-menu",
   data() {
     return {};
-  }
+  },
 };
 </script>
 
@@ -60,6 +66,10 @@ export default {
   .title {
     margin: 10px;
     text-align: center;
+    width: 90%;
+    height: 50px;
+    line-height: 50px;
+    background-color: #ff66001d;
   }
   .options {
     margin-top: 20px;

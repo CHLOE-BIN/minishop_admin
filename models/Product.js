@@ -29,7 +29,6 @@ const ProductSchema = new Schema({
     },
     showImg: {
         type: Array,
-        default: 'noData'
     },
     version: {
         type: Array
@@ -39,7 +38,7 @@ const ProductSchema = new Schema({
     },
     reserve: {
         type: Number,
-        default: 0
+        // default: 0
     },
     date: {
         type: Date,

@@ -36,7 +36,7 @@
               <p>满1件赠价值99元定制聚酯纤维双肩包 单品二灰色 赠完即止</p>
             </div>
             <div class="line"></div>
-            <div class="address-box">
+            <!-- <div class="address-box">
               <div class="address-info">
                 <span>广东</span>
                 <span>广州市</span>
@@ -45,7 +45,7 @@
               </div>
               <a href="javascript:;" class="modify-info">修改</a>
               <div class="rest-info">有现货</div>
-            </div>
+            </div> -->
             <div class="buy-options">
               <div class="buy-options-item">
                 <div class="item-title">选择版本</div>
@@ -287,10 +287,10 @@
             </div>
             <div class="btn-box">
               <a class="addCart" @click="addCart">加入购物车</a>
-              <a class="favorite">
+              <!-- <a class="favorite">
                 <span></span>
                 喜欢
-              </a>
+              </a> -->
             </div>
             <div class="after-sale-info">
               <ul>

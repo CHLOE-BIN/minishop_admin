@@ -7,7 +7,7 @@
           <div class="title">收货地址</div>
           <div class="addrList">
             <ul>
-              <li v-for="(item, index) in addr" :key="index"  @click="selectAddr">
+              <li class="item" v-for="(item, index) in addr" :key="index"  @click="selectAddr">
                 <div class="receiver">{{item.name}}</div>
                 <div class="phone">{{item.phone}}</div>
                 <div class="address">{{item.address}}</div>
@@ -165,6 +165,7 @@ export default {
       }
       console.log(selected);
       let item = document.querySelectorAll(".item")
+      console.log('--', item);
       // 2. 修改样式
       for (let i = 0; i < item.length; i++) {
         item[i].classList.remove("active");
@@ -251,7 +252,9 @@ export default {
           ul {
             display: flex;
             .active {
-              border: 1px solid $colorL;
+              border: 1px solid $colorA;
+              background-color: #ff66001c;
+              backdrop-filter: blur(5px);
             }
             li {
               display: inline-block;

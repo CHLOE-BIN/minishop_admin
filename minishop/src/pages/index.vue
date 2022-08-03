@@ -62,7 +62,7 @@
           <swiper :options="swiperOptions">
             <swiper-slide v-for="(item,index) in slideList" :key="index">
               <a :href="'/#/product/'+item.productId">
-                <img v-lazy="item.img" />
+                <img :src="item.img" />
               </a>
             </swiper-slide>
             <div class="swiper-pagination" slot="pagination"></div>
@@ -127,16 +127,16 @@
         </div>
         <div class="products">
           <div class="products-hd">
-            <h2>智能穿戴</h2>
+            <h2>电视</h2>
             <a @click="more(2)">查看更多</a>
           </div>
-          <div class="products-bd">
+          <div class="products-bd half">
             <div class="left-bar">
               <img v-lazy="'/imgs/products-leftbar-2.png'" alt />
             </div>
             <div class="product-list">
-              <ul v-for="(item,i) in [this.tv.slice(0, 4), this.tv.slice(4, 8)]" :key="i">
-                <li v-for="(sub,j) in item" :key="j">
+              <ul>
+                <li v-for="(sub,j) in this.tv.slice(0, 4)" :key="j">
                   <a :href="'/#/product/'+sub.productId">
                     <img v-lazy="sub.mainImage" alt />
                     <p class="sub-name">{{sub.name}}</p>
@@ -564,6 +564,16 @@ export default {
                 transform: translate3d(0, -2px, 0);
               }
             }
+          }
+        }
+        .half {
+          .left-bar {
+            img {
+              height: 300px;
+            }
+          }
+          .product-list {
+            height: 300px;
           }
         }
       }

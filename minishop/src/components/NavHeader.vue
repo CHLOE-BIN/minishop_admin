@@ -104,7 +104,7 @@
         <!-- 3. 搜索框 -->
         <div class="header-search">
           <div class="wrapper">
-            <input type="text" autocomplete="off" id="search" :value="keyword"/>
+            <input type="text" autocomplete="off" id="search" :value="keyword" @click="inputKeyword" @keyup.enter="goSearch"/>
             <div class="icon-search">
               <a @click="goSearch"></a>
             </div>
@@ -123,9 +123,11 @@ export default {
     return {
       proList: [],
       length: '',
+      index: 0,
       phoneList: [],
       tvList: [],
       keyword: '',
+      timer: null
     };
   },
   computed: {
@@ -164,7 +166,6 @@ export default {
   methods: {
     getProductList() {
       this.$axios.get("/products").then(res => {
-        console.log('res=>', res);
         for (let i = 0; i < res.length; i++) {
           this.proList.push(res[i])
           if (res[i].categoryId == 1) {
@@ -186,15 +187,14 @@ export default {
       })
     },
     changeKeyword() {
-      let index = 0
       let that = this
-      setInterval(function() {
-        if(index >= this.length) {
-          index = 0
+      this.timer = setInterval(function() {
+        if(that.index >= that.length) {
+          that.index = 0
         } else {
-          index += 1
+          that.index += 1
         }
-        that.keyword = that.proList[index].name
+        that.keyword = that.proList[that.index].name
         console.log(that.keyword);
       }, 3000)
     },
@@ -239,6 +239,10 @@ export default {
       });
       this.$router.push('/')
     },
+    inputKeyword() {
+      clearInterval(this.timer)
+      console.log(this.timer);
+    },
     goSearch() {
       this.keyword = document.querySelector("#search").value
       console.log(this.keyword);
@@ -249,7 +253,8 @@ export default {
           keyword: this.keyword
         }
       });
-      location.reload()
+      this.changeKeyword()
+      console.log(this.timer)
     }
   },
 };

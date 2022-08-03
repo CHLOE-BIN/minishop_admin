@@ -25,10 +25,10 @@ router.post("/add", (req, res) => {
 })
 
 // $route   GET /orders
-// @desc    返回用户的所有订单
+// @desc    返回所有用户订单
 // @access  public
 router.get("/", (req, res) => {
-    Order.find({ userId: req.query.userId })
+    Order.find()
         .then(order => {
             return res.json(order)
         })
@@ -65,6 +65,21 @@ router.get("/list", (req, res) => {
                     .then(order => {
                         res.json(order)
                     })
+            }
+        })
+        .catch(err => console.log(err))
+})
+
+// $route   GET /orders/user
+// @desc    返回用户所有的订单
+// @access  public
+router.get("/user", (req, res) => {
+    Order.find({ userId: req.query.userId })
+        .then(orders => {
+            if (!orders) {
+                return res.status(404).json("该用户没有订单")
+            } else {
+                return res.json(orders)
             }
         })
         .catch(err => console.log(err))

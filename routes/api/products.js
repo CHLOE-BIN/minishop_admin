@@ -8,7 +8,7 @@ const Product = require("../../models/Product");
 // @desc    返回添加的商品
 // @access  public
 router.post("/add", (req, res) => {
-    const categoryId = req.body.categoryId
+    // const categoryId = req.body.categoryId
     const productId = req.body.productId
     Product.findOne({ productId })
         .then(product => {
@@ -16,17 +16,16 @@ router.post("/add", (req, res) => {
                 return res.status(400).json({ email: "已有该商品" })
             } else {
                 const newProduct = {}
-
-                if (categoryId) newProduct.categoryId = categoryId
-                if (productId) newProduct.productId = productId
+                if (req.body.categoryId) newProduct.categoryId = req.body.categoryId
+                if (req.body.productId) newProduct.productId = req.body.productId
                 if (req.body.name) newProduct.name = req.body.name
                 if (req.body.subtitle) newProduct.subtitle = req.body.subtitle
                 if (req.body.mainImage) newProduct.mainImage = req.body.mainImage
                 if (req.body.price) newProduct.price = req.body.price
-                if (req.body.showImg) editProduct.showImg = req.body.showImg
-                if (req.body.version) editProduct.version = req.body.version
-                if (req.body.color) editProduct.color = req.body.color
-                if (req.body.reserve) editProduct.reserve = req.body.reserve
+                if (req.body.showImg) newProduct.showImg = req.body.showImg
+                if (req.body.version) newProduct.version = req.body.version
+                if (req.body.color) newProduct.color = req.body.color
+                newProduct.reserve = req.body.reserve || 0
 
                 new Product(newProduct)
                     .save()
@@ -81,7 +80,7 @@ router.post("/edit/:productId", (req, res) => {
     if (req.body.showImg) editProduct.showImg = req.body.showImg
     if (req.body.version) editProduct.version = req.body.version
     if (req.body.color) editProduct.color = req.body.color
-    if (req.body.reserve) editProduct.reserve = req.body.reserve
+    editProduct.reserve = req.body.reserve
 
     Product.findOneAndUpdate(
         { productId: req.params.productId },

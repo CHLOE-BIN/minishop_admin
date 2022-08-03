@@ -155,7 +155,7 @@ export default {
     };
   },
   mounted() {
-    this.change = this.$route.query.change == 'true' ? true : false
+    this.change = this.$route.query.change == 'true' || !this.$route.query.change ? true : false
     console.log(this.change);
   },
   methods: {

@@ -67,7 +67,7 @@ export default {
       const username = sessionStorage.getItem("username");
       this.$axios.post("/users", { username }).then(user => {
         const userId = user._id;
-        this.$axios.get("/orders", { params: {userId}})
+        this.$axios.get("/orders/user", { params: {userId}})
           .then(order => {
             if(order.length != 0) {
               this.show = true
@@ -208,10 +208,14 @@ export default {
               display: flex;
               justify-content: space-between;
               .proInfo {
+                height: 100px;
                 display: flex;
                 align-items: center;
                 .img {
+                  width: 100px;
+                  height: 100px;
                   margin-right: 10px;
+                  img {width: 100%; height: 100%;}
                 }
                 .info {
                   font-size: $fontJ;
