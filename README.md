@@ -1,2 +1,2 @@
 # minishop-node
-node.js + express + mongodb
+vue + element-ui + node.js + express + mongodb
